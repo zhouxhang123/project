@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>房祖名游戏</title>
+	</head>
+	<style type="text/css">
+		#wrap{
+			height:500px;
+			width:400px;
+			
+			box-shadow: 0 5px 5px #999999;
+			
+			margin: 0 auto;
+		}
+		#imgs{
+			width: 350px;
+			height: 350px;
+			
+			margin:100px auto;
+			
+			background-color: plum;
+		}
+		#imgs img{
+			height: 100%;
+			width: 100%;
+		}
+	</style>
+	<script type="text/javascript" src="jquery-3.2.1.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			//产生指定范围内随机数的方法;
+			function randFn(min,max){
+				return parseInt(Math.random()*(max-min)+min);
+			}
+			
+			//定义两个全局变量，分别保存游戏的轮数和房祖名出现的序列;
+			var num =1,pos=0;
+			
+			//点击按钮后，创建图片的函数；
+			function createImages(){
+				//清理掉上一轮游戏的界面;
+				$("#imgs").empty();
+				//确定当前一轮中，房祖名出现的序列数;
+				pos=randFn(0,num*num);
+				//使用for循环创建图片;
+				for(var i = 0;i<num*num;i++){
+					var src="";
+					//判断当前下标是否和房祖名出现的序列是否一致;
+					if(i==pos){
+						src="2.png";
+					}else{
+						src="1.png";
+					}
+					$("#imgs").append('<img src="'+src+'"/>');
+					$("#imgs img").css({
+						"width":$("#imgs").width()/num+"px",
+						"height":$("#imgs").height()/num+"px",
+						"float":"left"
+					});
+					
+				}
+				//当游戏界面绘制完毕之后，通过事件委托添加点击逻辑；
+			    $("#imgs").on("click","img",function(event){
+			    	//if($(this).index()==pos):如果使用这种方法，则click需要第二个img参数;
+			    	if($(event.target).index()==pos){
+			    		//如果使用event.target这种方法，在click中的第二个img参数不传也可以;
+			    		num++;
+			    		createImages();
+			    	}
+			    })
+			}
+			
+			$("#btn,#imgs").click(function(event){
+				num=2;
+				createImages();
+			})
+			
+		})
+	</script>
+	<body>
+		<!--游戏背板-->
+		<div id="wrap">
+			<button id="btn">开始</button>
+			<div id="imgs">
+				<img src="2.png" />
+			</div>
+		</div>
+		  
+	</body>
+	
+</html>
